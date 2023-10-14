@@ -49,7 +49,7 @@ def create_dataloader(
     shuffle: bool = True, 
     num_workers: int = 0, 
     pin_memory: bool = False
-) -> torch.utils.data.DataLoader:
+) -> DataLoader:
     """Create a dataloader from a path.
     
     Args:
