@@ -8,17 +8,21 @@ class ProblemDataset(Dataset):
     """Problem dataset.
     
     Args:
-        path (`pathlib.Path`): Path to the dataset.
+        data_path (`pathlib.Path`): Path to the dataset.
     """
-    def __init__(self, path: Path):
+    def __init__(self, data_path: Path, coordinates_path: Path):
         """Init method.
         
         Args:
-            path (`pathlib.Path`): Path to the dataset in CSV.
+            data_path (`pathlib.Path`): Path to the dataset in CSV.
+            coordinates_path (`pathlib.Path`): Path to the coordinates in CSV.
         """
         super(ProblemDataset, self).__init__()
-        self.path = path
-        self.data = pd.read_csv(path)
+        data = pd.read_csv(data_path)
+        coordinates = pd.read_csv(coordinates_path)
+        self.dataset = data.merge(coordinates, left_index=True, right_index=True)
+        self.dataset.drop(columns=['Row'], inplace=True)
+        self.y = self.dataset.drop(columns=['z_1', 'z_2'])
 
     def __len__(self) -> int:
         """Length of the dataset.
@@ -26,23 +30,25 @@ class ProblemDataset(Dataset):
         Returns:
             int: Length of the dataset.
         """
-        return len(self.data)
+        return len(self.dataset)
 
-    def __getitem__(self, idx: int) -> torch.Tensor:
+    def __getitem__(self, idx: int):
         """Get item.
         
         Args:
             idx (int): Index.
         
         Returns:
-            torch.Tensor: Item.
+            tuple: Inputs and outputs.
         """
-        return self.data.iloc[idx, :]
+        inputs = self.dataset.iloc[idx, :].values
+        outputs = self.y.iloc[idx, :].values
+        return inputs, outputs
 
 
 def create_dataloader(
-    path: Path, 
-    y: str,
+    data_path: Path, 
+    coordinates_path: Path,
     batch_size: int, 
     shuffle: bool = True, 
     num_workers: int = 0, 
@@ -60,7 +66,7 @@ def create_dataloader(
     Returns:
         torch.utils.data.DataLoader: Dataloader.
     """
-    dataset = ProblemDataset(path, y)
+    dataset = ProblemDataset(data_path, coordinates_path)
     dataloader = DataLoader(
         dataset, 
         batch_size=batch_size, 
