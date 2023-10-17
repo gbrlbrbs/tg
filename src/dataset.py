@@ -10,17 +10,15 @@ class ProblemDataset(Dataset):
     Args:
         path (`pathlib.Path`): Path to the dataset.
     """
-    def __init__(self, path: Path, y: str):
+    def __init__(self, path: Path):
         """Init method.
         
         Args:
             path (`pathlib.Path`): Path to the dataset in CSV.
-            y (str): Name of the target column.
         """
         super(ProblemDataset, self).__init__()
         self.path = path
         self.data = pd.read_csv(path)
-        self.y = self.data.pop(y)
 
     def __len__(self) -> int:
         """Length of the dataset.
@@ -39,7 +37,7 @@ class ProblemDataset(Dataset):
         Returns:
             torch.Tensor: Item.
         """
-        return self.data.iloc[idx, :], self.y.iloc[idx]
+        return self.data.iloc[idx, :]
 
 
 def create_dataloader(
