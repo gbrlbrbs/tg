@@ -1,0 +1,22 @@
+name: "exp1"
+ngpu: 1
+num_workers: 2
+num_runs: 2
+num_epochs: 10
+
+nn:
+  num_layers: 3 # number of hidden layers
+  # number of features for each linear layer, for decoder this will be reversed
+  # len must be equal to num_layers
+  features: [12, 8, 4]
+  activation: relu
+  loss: mse
+
+dataset:
+  filename: sjc_internacao.csv
+  batch_size: 32
+
+optimizer:
+  name: adam
+  lr: 0.001
+  weight_decay: 0.0000001

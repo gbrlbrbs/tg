@@ -1,0 +1,20 @@
+name: "test"
+ngpu: 1
+num_workers: 1
+num_runs: 1
+num_epochs: 10
+
+nn:
+  num_layers: 3
+  features: [4, 3, 2]
+  activation: relu
+  loss: mse
+
+dataset:
+  filename: data.csv
+  batch_size: 32
+
+optimizer:
+  name: adam
+  lr: 0.001
+  weight_decay: 0.0000001
