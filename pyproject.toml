@@ -1,0 +1,12 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pyhardgen"
+version = "0.0.1"
+authors = [
+  { name="Gabriel Martinz", email="gabriel.martinz@ga.ita.br" },
+]
+readme = "README.md"
+requires-python = ">=3.10"
