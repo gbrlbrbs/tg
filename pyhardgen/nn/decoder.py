@@ -9,6 +9,7 @@ class Decoder(nn.Module):
         Args:
             latent_size (int): Latent size.
             output_size (int): Output size.
+            params (`nn`): Parameters for the decoder.
         """
         super(Decoder, self).__init__()
         num_layers = params.num_layers
