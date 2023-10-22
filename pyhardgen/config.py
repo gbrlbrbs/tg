@@ -32,18 +32,18 @@ class optimizer:
 class Config:
     name: str
     ngpu: int
-    num_epochs: int
-    num_runs: int
-    num_workers: int
+    epochs: int
+    runs: int
+    workers: int
     nn: model
     dataset: dataset
     optimizer: optimizer
 
 
-class nnSchema(Schema):
+class ModelSchema(Schema):
 
     def validate(self, data, _is_event_schema=True):
-        data = super(nnSchema, self).validate(data, _is_event_schema=False)
+        data = super(ModelSchema, self).validate(data, _is_event_schema=False)
         if _is_event_schema and data['num_layers'] != len(data['features']):
             raise ValueError('num_layers must be equal to the length of features')
         return data
@@ -52,10 +52,10 @@ class nnSchema(Schema):
 SCHEMA = Schema({
     'name': And(str, len),
     'ngpu': And(int, lambda n: 0 <= n),
-    'num_epochs': And(int, lambda n: 0 < n),
-    'num_runs': And(int, lambda n: 0 < n),
-    'num_workers': And(int, lambda n: 0 <= n),
-    'nn': nnSchema({
+    'epochs': And(int, lambda n: 0 < n),
+    'runs': And(int, lambda n: 0 < n),
+    'workers': And(int, lambda n: 0 <= n),
+    'nn': ModelSchema({
         'num_layers': And(int, lambda n: 0 < n),
         'features': And([And(int, lambda n: 0 < n)], len),
         'activation': And(str, len),
@@ -66,7 +66,6 @@ SCHEMA = Schema({
         'batch_size': And(int, lambda n: 0 < n),
     },
     'optimizer': {
-        'name': And(str, len),
         'lr': And(float, lambda n: 0 < n),
         Optional('weight_decay'): And(float, lambda n: 0 <= n),
     },
@@ -75,7 +74,8 @@ SCHEMA = Schema({
 def load_config(path: Path) -> Config:
     with open(path, 'r') as file:
         config_raw_str = file.read()
-        config_raw = yaml.safe_load(config_raw_str)
+
+    config_raw = yaml.safe_load(config_raw_str)
     
     SCHEMA.validate(config_raw)
 
