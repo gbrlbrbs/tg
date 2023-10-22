@@ -3,15 +3,18 @@ import torch
 from dataclasses import dataclass
 from torch.optim import Adam
 from torch.utils.data import DataLoader
+from typing import Generic, TypeVar
 from .nn.encoder import Encoder
 from .nn.decoder import Decoder
 from .nn.autoencoder import Autoencoder
 from .config import Config
 from .loss import match_loss
 
+T = TypeVar('T')
+
 @dataclass
-class TrainReturn:
-    model: Autoencoder | Encoder | Decoder
+class TrainReturn(Generic[T]):
+    model: T
     losses: list[float]
 
 
