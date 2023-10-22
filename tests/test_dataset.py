@@ -18,6 +18,9 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(len(inputs), len(df.columns))
         self.assertEqual(len(outputs), 2)
 
+    def test_dataset_n_features(self):
+        self.assertEqual(problem_dataset.n_features, len(df.columns))
+
     def test_dataset_row_column(self):
         self.assertFalse('Row' in problem_dataset.dataset.columns)
         self.assertFalse('Row' in problem_dataset.y.columns)
