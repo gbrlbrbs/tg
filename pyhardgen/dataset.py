@@ -49,8 +49,7 @@ class ProblemDataset(Dataset):
 
 
 def create_dataloader(
-    data_path: Path, 
-    coordinates_path: Path,
+    dataset: ProblemDataset,
     batch_size: int, 
     shuffle: bool = True, 
     num_workers: int = 0, 
@@ -59,8 +58,7 @@ def create_dataloader(
     """Create a dataloader from a path.
     
     Args:
-        path (Path): Path to the dataset.
-        batch_size (int): Batch size.
+        dataset (`ProblemDataset`): Dataset.
         shuffle (bool, optional): Shuffle the dataset. Defaults to True.
         num_workers (int, optional): Number of workers. Defaults to 0.
         pin_memory (bool, optional): Pin memory. Defaults to False.
@@ -68,7 +66,6 @@ def create_dataloader(
     Returns:
         torch.utils.data.DataLoader: Dataloader.
     """
-    dataset = ProblemDataset(data_path, coordinates_path)
     dataloader = DataLoader(
         dataset, 
         batch_size=batch_size, 
