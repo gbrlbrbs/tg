@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from .activation import match_activation
 from ..config import model
 
 class Decoder(nn.Module):
@@ -14,15 +15,16 @@ class Decoder(nn.Module):
         super(Decoder, self).__init__()
         num_layers = params.num_layers
         features = params.features.reverse()
+        activation = match_activation(params.activation)
         layers = []
         for i in range(num_layers):
             if i == 0:
                 layers.append(nn.Linear(latent_size, features[i]))
             else:
                 layers.append(nn.Linear(features[i-1], features[i]))
-            layers.append(nn.ReLU(True))
+            layers.append(activation)
         layers.append(nn.Linear(features[-1], output_size))
-        layers.append(nn.ReLU(True))
+        layers.append(activation)
 
         self.decoder = nn.Sequential(*layers)
 
