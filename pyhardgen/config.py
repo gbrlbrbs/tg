@@ -23,7 +23,6 @@ class dataset:
 @serde
 @dataclass
 class optimizer:
-    name: str
     lr: float
     weight_decay: t.Optional[float] = None
 
