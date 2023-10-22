@@ -31,7 +31,7 @@ def main():
     )
 
     decoder_training = train_decoder(
-        encoder_training,
+        dataloader,
         decoder,
         config,
         device
