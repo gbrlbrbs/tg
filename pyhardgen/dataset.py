@@ -22,6 +22,7 @@ class ProblemDataset(Dataset):
         coordinates = pd.read_csv(coordinates_path)
         self.dataset = data.merge(coordinates, left_index=True, right_index=True)
         self.dataset.drop(columns=['Row'], inplace=True)
+        self.n_features = len(self.dataset.columns)
         self.y = self.dataset.loc[:, ['z_1', 'z_2']]
         self.dataset.drop(columns=['z_1', 'z_2'], inplace=True)
 
