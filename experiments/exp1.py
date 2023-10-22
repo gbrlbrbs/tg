@@ -1,7 +1,7 @@
 from pyhardgen.train import train_encoder, train_decoder
 from pyhardgen.config import load_config
 from pyhardgen.datagen import generate_data_from_z
-from pyhardgen.dataset import ProblemDataset
+from pyhardgen.dataset import ProblemDataset, create_dataloader
 from pyhardgen.nn.encoder import Encoder
 from pyhardgen.nn.decoder import Decoder
 import torch
@@ -19,5 +19,20 @@ def main():
     device = torch.device('cuda' if torch.cuda.is_available() and (config.ngpu > 0) else 'cpu')
 
     dataset = ProblemDataset(dataset_path, coordinates_path)
+    dataloader = create_dataloader(dataset, config.dataset.batch_size)
     encoder = Encoder(dataset.n_features, 2, config.nn)
     decoder = Decoder(2, dataset.n_features, config.nn)
+
+    encoder_training = train_encoder(
+        dataloader,
+        encoder,
+        config,
+        device
+    )
+
+    decoder_training = train_decoder(
+        encoder_training,
+        decoder,
+        config,
+        device
+    )
