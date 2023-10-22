@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from .activation import match_activation
+from .helpers import match_activation
 from ..config import model
 
 class Encoder(nn.Module):
@@ -13,7 +13,7 @@ class Encoder(nn.Module):
             params (`nn`): Parameters for the encoder.
         """
         super(Encoder, self).__init__()
-        num_layers = params.num_layers
+        num_layers = params.n_layers
         features = params.features
         activation = match_activation(params.activation)
         layers = []

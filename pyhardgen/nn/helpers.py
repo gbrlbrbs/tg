@@ -1,4 +1,5 @@
 import torch.nn as nn
+from ..config import model
 
 def match_activation(name: str):
     match name.lower():
