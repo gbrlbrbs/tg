@@ -9,7 +9,7 @@ import yaml
 @serde
 @dataclass
 class model:
-    num_layers: int
+    n_layers: int
     features: list[int]
     activation: str
     loss: str
@@ -43,7 +43,7 @@ class ModelSchema(Schema):
 
     def validate(self, data, _is_event_schema=True):
         data = super(ModelSchema, self).validate(data, _is_event_schema=False)
-        if _is_event_schema and data['num_layers'] != len(data['features']):
+        if _is_event_schema and data['n_layers'] != len(data['features']):
             raise ValueError('num_layers must be equal to the length of features')
         return data
 
@@ -55,7 +55,7 @@ SCHEMA = Schema({
     'runs': And(int, lambda n: 0 < n),
     'workers': And(int, lambda n: 0 <= n),
     'nn': ModelSchema({
-        'num_layers': And(int, lambda n: 0 < n),
+        'n_layers': And(int, lambda n: 0 < n),
         'features': And([And(int, lambda n: 0 < n)], len),
         'activation': And(str, len),
         'loss': And(str, len),
