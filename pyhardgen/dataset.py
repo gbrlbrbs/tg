@@ -10,7 +10,7 @@ class ProblemDataset(Dataset):
     Args:
         data_path (`pathlib.Path`): Path to the dataset.
     """
-    def __init__(self, data_path: Path, coordinates_path: Path, cats: list[str], conts: list[str]):
+    def __init__(self, data: pd.DataFrame, coordinates_path: Path, cats: list[str], conts: list[str]):
         """Init method.
         
         Args:
@@ -18,7 +18,7 @@ class ProblemDataset(Dataset):
             coordinates_path (`pathlib.Path`): Path to the coordinates in CSV.
         """
         super(ProblemDataset, self).__init__()
-        data = pd.read_csv(data_path)
+        
         coordinates = pd.read_csv(coordinates_path)
         self.dataset = data.merge(coordinates, left_index=True, right_index=True)
         self.dataset.drop(columns=['Row'], inplace=True)

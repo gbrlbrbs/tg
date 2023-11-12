@@ -6,8 +6,12 @@ import pandas as pd
 def generate_data_from_z(
     decoder: Decoder,
     z_limits: np.ndarray,
-    columns: list[str],
+    cat_names: list[str],
+    cont_names: list[str],
+    means: np.ndarray,
+    stds: np.ndarray,
     device: torch.device,
+    cat_dict: dict[str, int],
     n_samples: int = 100,
 ) -> pd.DataFrame:
     """Generate data from a decoder.
@@ -22,6 +26,16 @@ def generate_data_from_z(
         `pd.DataFrame`: Generated data.
     """
     points = np.random.uniform(z_limits[0], z_limits[1], size=(n_samples, 2))
-    data: torch.Tensor = decoder(torch.tensor(points, dtype=torch.float64).to(device))
-    df = pd.DataFrame(data.detach().cpu().numpy(), columns=columns)
+    decoded = decoder(torch.tensor(points, dtype=torch.float64).to(device))
+    cat_preds, cont_preds = decoded
+    cat_reduced = torch.zeros((n_samples, len(cat_names)), dtype=torch.long)
+    pos = 0
+    for i, (_, v) in enumerate(cat_dict.items()):
+        cat_reduced[:, i] = torch.argmax(cat_preds[:, pos:pos + v], dim=1)
+        pos += v
+    
+    df_cat = pd.DataFrame(cat_reduced.cpu().numpy(), columns=cat_names)
+    conts = cont_preds.detach().cpu().numpy() * stds + means
+    df_cont = pd.DataFrame(conts, columns=cont_names)
+    df = pd.concat([df_cat, df_cont], axis=1)
     return df

@@ -22,12 +22,12 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(problem_dataset.n_features, len(df.columns))
 
     def test_dataset_row_column(self):
-        self.assertFalse('Row' in problem_dataset.dataset.columns)
+        self.assertFalse('Row' in problem_dataset.data.columns)
         self.assertFalse('Row' in problem_dataset.y.columns)
     
     def test_dataset_z_columns(self):
-        self.assertFalse('z_1' in problem_dataset.dataset.columns)
-        self.assertFalse('z_2' in problem_dataset.dataset.columns)
+        self.assertFalse('z_1' in problem_dataset.data.columns)
+        self.assertFalse('z_2' in problem_dataset.data.columns)
         self.assertTrue('z_1' in problem_dataset.y.columns)
         self.assertTrue('z_2' in problem_dataset.y.columns)
 

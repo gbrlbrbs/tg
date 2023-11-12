@@ -12,7 +12,6 @@ class model:
     n_layers: int
     features: list[int]
     activation: str
-    loss: str
     dropout: float
 
 @serde
@@ -59,7 +58,6 @@ SCHEMA = Schema({
         'n_layers': And(int, lambda n: 0 < n),
         'features': And([And(int, lambda n: 0 < n)], len),
         'activation': And(str, len),
-        'loss': And(str, len),
         'dropout': And(float, lambda n: 0 <= n < 1),
     }),
     'dataset': {

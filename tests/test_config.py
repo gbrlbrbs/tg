@@ -14,7 +14,7 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(config.epochs, 10)
         self.assertEqual(config.runs, 1)
         self.assertEqual(config.workers, 1)
-        self.assertEqual(config.nn.num_layers, 3)
+        self.assertEqual(config.nn.n_layers, 3)
         self.assertEqual(config.nn.features, [4, 3, 2])
         self.assertEqual(config.nn.activation, 'relu')
         self.assertEqual(config.nn.loss, 'mse')
