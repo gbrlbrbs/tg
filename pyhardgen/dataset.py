@@ -10,7 +10,7 @@ class ProblemDataset(Dataset):
     Args:
         data_path (`pathlib.Path`): Path to the dataset.
     """
-    def __init__(self, data_path: Path, coordinates_path: Path):
+    def __init__(self, data_path: Path, coordinates_path: Path, cats: list[str], conts: list[str]):
         """Init method.
         
         Args:
@@ -24,6 +24,8 @@ class ProblemDataset(Dataset):
         self.dataset.drop(columns=['Row'], inplace=True)
         self.y = self.dataset.loc[:, ['z_1', 'z_2']]
         self.dataset.drop(columns=['z_1', 'z_2'], inplace=True)
+        self.cats = cats
+        self.conts = conts
         self.n_features = len(self.dataset.columns)
 
     def __len__(self) -> int:
@@ -43,9 +45,10 @@ class ProblemDataset(Dataset):
         Returns:
             tuple: Inputs and outputs.
         """
-        inputs = self.dataset.iloc[idx, :].values
+        inputs_cats = self.dataset.loc[:, self.cats].iloc[idx, :].values
+        inputs_conts = self.dataset.loc[:, self.conts].iloc[idx, :].values
         outputs = self.y.iloc[idx, :].values
-        return inputs, outputs
+        return inputs_cats, inputs_conts, outputs
 
 
 def create_dataloader(

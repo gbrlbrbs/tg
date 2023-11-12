@@ -3,12 +3,13 @@ import torch
 from dataclasses import dataclass
 from torch.optim import Adam
 from torch.utils.data import DataLoader
+from torch.utils.tensorboard.writer import SummaryWriter
 from typing import Generic, TypeVar
 from .nn.encoder import Encoder
 from .nn.decoder import Decoder
 from .nn.autoencoder import Autoencoder
 from .config import Config
-from .loss import match_loss
+from .loss import match_loss, LossDecoder
 
 T = TypeVar('T')
 
@@ -24,6 +25,7 @@ def train_autoencoder(
         decoder: Decoder,
         config: Config,
         device: torch.device,
+        writer: SummaryWriter
 ):
     """Train the model.
 
@@ -48,22 +50,34 @@ def train_autoencoder(
     autoencoder_optim = Adam(autoencoder.parameters(), lr=config.optimizer.lr, weight_decay=config.optimizer.weight_decay)
 
     for epoch in range(config.epochs):
+        print(f'Autoencoder Training Epoch: {epoch+1}')
+        running_loss = 0.0
+        last_loss = 0.0
+        running_loss_epoch = 0.0
         for i, (x, _) in enumerate(dl):
-            x = torch.tensor(x).to(device)
+            autoencoder_optim.zero_grad()
+
+            x = torch.tensor(x, dtype=torch.float64).to(device)
 
             y = autoencoder(x)
             loss_autoencoder = criterion(y, x)
 
-            autoencoder_losses.append(loss_autoencoder.item())
-
-            autoencoder.zero_grad()
-
+            loss_autoencoder.backward()
             autoencoder_optim.step()
 
-            loss_autoencoder.backward()
-
-            if i % 100 == 0:
-                print(f'Autoencoder Training Epoch: {epoch}, Losses: {loss_autoencoder.item()}')
+            running_loss += loss_autoencoder.item()
+            running_loss_epoch += loss_autoencoder.item()
+            if i % 100 == 99:
+                last_loss = running_loss / 100
+                print(f'    Batch: {i+1}, Loss: {last_loss}')
+                tb_x = epoch * len(dl) + i + 1
+                writer.add_scalar('Autoencoder Loss', last_loss, tb_x)
+                running_loss = 0.0
+            
+        loss_epoch = running_loss_epoch / len(dl)
+        autoencoder_losses.append(loss_epoch)
+        writer.add_scalar('Autoencoder Epoch Loss', loss_epoch, epoch+1)
+        print(f'Epoch Loss: {loss_epoch}')
 
     return TrainReturn(autoencoder, autoencoder_losses)
 
@@ -73,6 +87,7 @@ def train_encoder(
         encoder: Encoder,
         config: Config,
         device: torch.device,
+        writer: SummaryWriter
 ):
     """Train the encoder.
 
@@ -95,22 +110,35 @@ def train_encoder(
     encoder_optim = Adam(encoder.parameters(), lr=config.optimizer.lr, weight_decay=config.optimizer.weight_decay)
 
     for epoch in range(config.epochs):
+        print(f'Encoder Training Epoch: {epoch+1}')
+        running_loss = 0.0
+        last_loss = 0.0
+        running_loss_epoch = 0.0
         for i, (x, y) in enumerate(dl):
-            x = torch.tensor(x).to(device)
-            y = torch.tensor(y).to(device)
+            encoder_optim.zero_grad()
+            xt = torch.tensor(x, dtype=torch.float64).to(device)
+            yt = torch.tensor(y, dtype=torch.float64).to(device)
 
-            encoded = encoder(x)
-            loss_encoder = criterion(encoded, y)
-            encoder_losses.append(loss_encoder.item())
-
-            encoder.zero_grad()
-
-            encoder_optim.step()
+            encoded = encoder(xt)
+            loss_encoder = criterion(encoded, yt)
 
             loss_encoder.backward()
+            encoder_optim.step()
 
-            if i % 100 == 0:
-                print(f'Encoder Training Epoch: {epoch}, Loss: {loss_encoder.item()}')
+            running_loss += loss_encoder.item()
+            running_loss_epoch += loss_encoder.item()
+
+            if i % 100 == 99:
+                last_loss = running_loss / 100
+                print(f'    Batch: {i+1} Loss: {last_loss}')
+                tb_x = epoch * len(dl) + i + 1
+                writer.add_scalar('Encoder Loss', last_loss, tb_x)
+                running_loss = 0.0
+        
+        loss_epoch = running_loss_epoch / len(dl)
+        encoder_losses.append(loss_epoch)
+        writer.add_scalar('Encoder Epoch Loss', loss_epoch, epoch+1)
+        print(f'Epoch Loss: {loss_epoch}')
 
     return TrainReturn(encoder, encoder_losses)
 
@@ -120,6 +148,8 @@ def train_decoder(
         decoder: Decoder,
         config: Config,
         device: torch.device,
+        writer: SummaryWriter,
+        cat_dict: dict[str, int]
 ):
     """Train the decoder.
 
@@ -129,34 +159,50 @@ def train_decoder(
         config (Config): Config object.
         device (torch.device): Device.
 
+
     Returns:
         `TrainReturn`: Model and losses.
     """
-    decoder.to(device)
+    decoder.to(device).type(torch.float64)
     decoder.train()
 
-    criterion = match_loss(config.nn.loss)
+    criterion = LossDecoder(cat_dict)
 
     decoder_losses = []
 
     decoder_optim = Adam(decoder.parameters(), lr=config.optimizer.lr, weight_decay=config.optimizer.weight_decay)
 
     for epoch in range(config.epochs):
-        for i, (x, y) in enumerate(dl):
-            x = torch.tensor(x).to(device)
-            y = torch.tensor(y).to(device)
+        print(f'Decoder Training Epoch: {epoch+1}')
+        running_loss = 0.0
+        last_loss = 0.0
+        running_loss_epoch = 0.0
+        for i, (x_cat, x_cont, y) in enumerate(dl):
+            decoder_optim.zero_grad()
 
-            decoded = decoder(y)
-            loss_decoder = criterion(decoded, x)
-            decoder_losses.append(loss_decoder.item())
+            xt_cat = torch.tensor(x_cat, dtype=torch.float64).to(device)
+            xt_cont = torch.tensor(x_cont, dtype=torch.float64).to(device)
+            yt = torch.tensor(y, dtype=torch.float64).to(device)
 
-            decoder.zero_grad()
-
-            decoder_optim.step()
+            decoded = decoder(yt)
+            loss_decoder = criterion(decoded, xt_cat, xt_cont)
 
             loss_decoder.backward()
+            decoder_optim.step()
 
-            if i % 100 == 0:
-                print(f'Decoder Training Epoch: {epoch}, Loss: {loss_decoder.item()}')
+            running_loss += loss_decoder.item()
+            running_loss_epoch += loss_decoder.item()
+
+            if i % 20 == 19:
+                last_loss = running_loss / 100
+                print(f'    Batch: {i+1}, Loss: {last_loss}')
+                tb_x = epoch * len(dl) + i + 1
+                writer.add_scalar('Decoder Loss', last_loss, tb_x)
+                running_loss = 0.0
+
+        loss_epoch = running_loss_epoch / len(dl)
+        decoder_losses.append(loss_epoch)
+        writer.add_scalar('Decoder Epoch Loss', loss_epoch, epoch+1)
+        print(f'Epoch Loss: {loss_epoch}')
 
     return TrainReturn(decoder, decoder_losses)

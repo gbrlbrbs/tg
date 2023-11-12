@@ -7,6 +7,7 @@ def generate_data_from_z(
     decoder: Decoder,
     z_limits: np.ndarray,
     columns: list[str],
+    device: torch.device,
     n_samples: int = 100,
 ) -> pd.DataFrame:
     """Generate data from a decoder.
@@ -21,6 +22,6 @@ def generate_data_from_z(
         `pd.DataFrame`: Generated data.
     """
     points = np.random.uniform(z_limits[0], z_limits[1], size=(n_samples, 2))
-    data: torch.Tensor = decoder(torch.from_numpy(points).float())
-    df = pd.DataFrame(data.detach().numpy(), columns=columns)
+    data: torch.Tensor = decoder(torch.tensor(points, dtype=torch.float64).to(device))
+    df = pd.DataFrame(data.detach().cpu().numpy(), columns=columns)
     return df

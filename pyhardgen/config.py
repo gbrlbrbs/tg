@@ -13,6 +13,7 @@ class model:
     features: list[int]
     activation: str
     loss: str
+    dropout: float
 
 @serde
 @dataclass
@@ -59,6 +60,7 @@ SCHEMA = Schema({
         'features': And([And(int, lambda n: 0 < n)], len),
         'activation': And(str, len),
         'loss': And(str, len),
+        'dropout': And(float, lambda n: 0 <= n < 1),
     }),
     'dataset': {
         'filename': And(str, len),
