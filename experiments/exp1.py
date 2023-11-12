@@ -40,17 +40,17 @@ def main():
     if decoder_path.exists():
         decoder.load_state_dict(torch.load(decoder_path))
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-    writer = SummaryWriter("./logs/exp1/" + timestamp)
     
-    # decoder_training = train_decoder(
-    #     dataloader,
-    #     decoder,
-    #     config,
-    #     device,
-    #     writer,
-    #     cat_dict
-    # )
-    # torch.save(decoder_training.model.state_dict(), save_path / 'decoder.pt')
+    writer = SummaryWriter("./logs/exp1/" + timestamp)
+    decoder_training = train_decoder(
+        dataloader,
+        decoder,
+        config,
+        device,
+        writer,
+        cat_dict
+    )
+    torch.save(decoder_training.model.state_dict(), save_path / 'decoder.pt')
 
     z1_limits = np.array([-2.5, -1.5]).reshape((2, 1))
     z2_limits = np.array([-1.0, 0.0]).reshape((2, 1))

@@ -1,14 +1,14 @@
 name: "exp1"
 ngpu: 1
 workers: 2
-runs: 2
+runs: 1
 epochs: 20
 
 nn:
-  n_layers: 5 # number of hidden layers
+  n_layers: 3 # number of hidden layers
   # number of features for each linear layer, for decoder this will be reversed
   # len must be equal to n_layers
-  features: [256, 64, 16, 8, 4]
+  features: [16, 8, 4]
   activation: relu
   dropout: 0.1
 
@@ -17,5 +17,5 @@ dataset:
   batch_size: 256
 
 optimizer:
-  lr: 0.0000000001
-  weight_decay: 0.00000001
+  lr: 1.0e-3
+  weight_decay: 0.001
