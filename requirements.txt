@@ -3,3 +3,5 @@ schema
 pyserde
 numpy
 pyyaml
+tensorboard
+matplotlib
