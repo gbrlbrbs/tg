@@ -26,7 +26,7 @@ def generate_data_from_z(
         `pd.DataFrame`: Generated data.
     """
     points = np.random.uniform(z_limits[0], z_limits[1], size=(n_samples, 2))
-    decoded = decoder(torch.tensor(points, dtype=torch.float32).to(device))
+    decoded = decoder(torch.tensor(points, dtype=torch.float64).to(device))
     cat_preds, cont_preds = decoded
     cat_reduced = torch.zeros((n_samples, len(cat_names)), dtype=torch.long)
     pos = 0
