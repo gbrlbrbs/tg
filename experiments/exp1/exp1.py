@@ -17,10 +17,10 @@ parser.add_argument('--train', action=argparse.BooleanOptionalAction, default=Fa
 
 def main():
     args = parser.parse_args()
-    data_path = Path('./pyhard/sjc_internacao')
+    data_path = Path('../pyhard/sjc_internacao')
     coordinates_path = data_path / 'coordinates.csv'
     config_path = Path('./exp1.yaml')
-    save_path = Path('./models/exp1')
+    save_path = Path('../models/exp1')
     save_path.mkdir(parents=True, exist_ok=True)
     decoder_path = save_path / 'decoder.pt'
 
@@ -49,7 +49,7 @@ def main():
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     
     if args.train:
-        writer = SummaryWriter("./logs/exp1/" + timestamp)
+        writer = SummaryWriter("../logs/exp1/" + timestamp)
         decoder_training = train_decoder(
             dataloader,
             decoder,
@@ -63,12 +63,15 @@ def main():
     z1_limits = np.array([-2.5, -1.5]).reshape((2, 1))
     z2_limits = np.array([-1.0, 0.0]).reshape((2, 1))
     z_limits = np.hstack((z1_limits, z2_limits))
-    df = generate_data_from_z(decoder, z_limits, cats, conts, means, stds, device=device, cat_dict=cat_dict, n_samples=1000)
+    print(z_limits)
+    df, points = generate_data_from_z(decoder, z_limits, cats, conts, means, stds, device=device, cat_dict=cat_dict, n_samples=1000)
     df.to_csv(data_path / 'generated_data.csv', index=False)
+    points_df = pd.DataFrame(points, columns=['z_1', 'z_2'])
 
     data = pd.read_csv(dataset_path)
     data = pd.concat([data, df])
-    data.to_csv('./pyhard/exp1/data.csv', index=False)
+    data.to_csv('../pyhard/exp1/data.csv', index=False)
+    points_df.to_csv('../pyhard/exp1/coordinates_generated.csv', index=False)
 
 if __name__ == '__main__':
     main()
