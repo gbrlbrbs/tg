@@ -10,8 +10,13 @@ import torch
 import numpy as np
 import pandas as pd
 from pathlib import Path
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--train', action=argparse.BooleanOptionalAction, default=False)
 
 def main():
+    args = parser.parse_args()
     data_path = Path('./pyhard/sjc_internacao')
     coordinates_path = data_path / 'coordinates.csv'
     config_path = Path('./exp1.yaml')
@@ -43,16 +48,17 @@ def main():
         decoder.type(torch.float64)
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     
-    writer = SummaryWriter("./logs/exp1/" + timestamp)
-    decoder_training = train_decoder(
-        dataloader,
-        decoder,
-        config,
-        device,
-        writer,
-        cat_dict
-    )
-    torch.save(decoder_training.model.state_dict(), save_path / 'decoder.pt')
+    if args.train:
+        writer = SummaryWriter("./logs/exp1/" + timestamp)
+        decoder_training = train_decoder(
+            dataloader,
+            decoder,
+            config,
+            device,
+            writer,
+            cat_dict
+        )
+        torch.save(decoder_training.model.state_dict(), save_path / 'decoder.pt')
 
     z1_limits = np.array([-2.5, -1.5]).reshape((2, 1))
     z2_limits = np.array([-1.0, 0.0]).reshape((2, 1))
