@@ -4,6 +4,7 @@ from pyhardgen.datagen import generate_data_from_z
 from pyhardgen.nn.decoder import Decoder
 from pyhardgen.dataset import *
 from torch.utils.tensorboard.writer import SummaryWriter
+import pyhard
 from datetime import datetime
 import torch
 import numpy as np
@@ -11,7 +12,7 @@ import pandas as pd
 from pathlib import Path
 
 def main():
-    data_path = Path('../data/')
+    data_path = Path('../data/exp1')
     coordinates_path = data_path / 'coordinates.csv'
     dataset_path = data_path / 'sjc_internacao.csv'
     config_path = Path('../configs/exp1.yaml')
@@ -58,6 +59,9 @@ def main():
     df = generate_data_from_z(decoder, z_limits, cats, conts, means, stds, device=device, cat_dict=cat_dict, n_samples=1000)
     df.to_csv(data_path / 'generated_data.csv', index=False)
 
+    data = pd.read_csv(dataset_path)
+    data = data.append(df, ignore_index=True)
+    data.to_csv('./pyhard/exp1/generated_data.csv', index=False)
 
 if __name__ == '__main__':
     main()
