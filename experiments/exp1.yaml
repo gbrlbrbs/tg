@@ -2,7 +2,7 @@ name: "exp1"
 ngpu: 1
 workers: 2
 runs: 1
-epochs: 20
+epochs: 15
 
 nn:
   n_layers: 3 # number of hidden layers
