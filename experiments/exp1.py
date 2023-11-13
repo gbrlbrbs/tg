@@ -14,13 +14,13 @@ from pathlib import Path
 def main():
     data_path = Path('./pyhard/sjc_internacao')
     coordinates_path = data_path / 'coordinates.csv'
-    dataset_path = data_path / 'sjc_internacao.csv'
     config_path = Path('./exp1.yaml')
     save_path = Path('./models/exp1')
     save_path.mkdir(parents=True, exist_ok=True)
     decoder_path = save_path / 'decoder.pt'
 
     config = load_config(config_path)
+    dataset_path = data_path / config.dataset.filename
     device = torch.device('cuda' if torch.cuda.is_available() and (config.ngpu > 0) else 'cpu')
 
     data = pd.read_csv(dataset_path)
