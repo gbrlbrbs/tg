@@ -13,7 +13,7 @@ def generate_data_from_z(
     device: torch.device,
     cat_dict: dict[str, int],
     n_samples: int = 100,
-) -> (pd.DataFrame, np.ndarray):
+) -> tuple[pd.DataFrame, np.ndarray]:
     """Generate data from a decoder.
 
     Args:
