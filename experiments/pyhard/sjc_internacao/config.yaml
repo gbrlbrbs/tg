@@ -57,10 +57,10 @@ hpo:
     enabled: False
     
     # Maximum number of evaluations (steps)
-    evals: 10
+    evals: 5
     
     # Timeout for each fold (in seconds)
-    timeout: 90
+    timeout: 30
 
 
 # ISA parameters

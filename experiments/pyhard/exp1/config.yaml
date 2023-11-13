@@ -57,10 +57,10 @@ hpo:
     enabled: True
     
     # Maximum number of evaluations (steps)
-    evals: 10
+    evals: 5
     
     # Timeout for each fold (in seconds)
-    timeout: 90
+    timeout: 30
 
 
 # ISA parameters
@@ -142,12 +142,12 @@ algos:
     pool:
         # classifiers
         - svc_linear
-        - svc_rbf
+        # - svc_rbf
         - random_forest
-        - gradient_boosting
+        # - gradient_boosting
         - bagging
         - logistic_regression
-        - mlp
+        # - mlp
         # - dummy
 
         # regressors
