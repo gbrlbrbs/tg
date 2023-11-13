@@ -12,10 +12,10 @@ import pandas as pd
 from pathlib import Path
 
 def main():
-    data_path = Path('../data/exp1')
+    data_path = Path('./pyhard/sjc_internacao')
     coordinates_path = data_path / 'coordinates.csv'
     dataset_path = data_path / 'sjc_internacao.csv'
-    config_path = Path('../configs/exp1.yaml')
+    config_path = Path('./exp1.yaml')
     save_path = Path('./models/exp1')
     save_path.mkdir(parents=True, exist_ok=True)
     decoder_path = save_path / 'decoder.pt'
@@ -40,6 +40,7 @@ def main():
     decoder = Decoder(2, n_cont, n_cat, torch.tensor(low).to(device), torch.tensor(high).to(device), config.nn).to(device)
     if decoder_path.exists():
         decoder.load_state_dict(torch.load(decoder_path))
+        decoder.type(torch.float64)
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     
     writer = SummaryWriter("./logs/exp1/" + timestamp)
@@ -60,8 +61,8 @@ def main():
     df.to_csv(data_path / 'generated_data.csv', index=False)
 
     data = pd.read_csv(dataset_path)
-    data = data.append(df, ignore_index=True)
-    data.to_csv('./pyhard/exp1/generated_data.csv', index=False)
+    data = pd.concat([data, df])
+    data.to_csv('./pyhard/exp1/data.csv', index=False)
 
 if __name__ == '__main__':
     main()

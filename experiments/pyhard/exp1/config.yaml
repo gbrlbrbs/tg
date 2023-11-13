@@ -13,7 +13,7 @@ general:
 
     # path to the dataset file (csv)
     # can be a relative path: ../datasets/data.csv
-    datafile: sjc_internacao.csv
+    datafile: data.csv
     
     # type of problem: either classification or regression
     problem: classification
@@ -54,7 +54,7 @@ fs:
 
 # Hyper-parameter optimization (HPO)
 hpo:
-    enabled: False
+    enabled: True
     
     # Maximum number of evaluations (steps)
     evals: 10
@@ -90,14 +90,14 @@ measures:
     # which measures to calculate
     list:
         # hardness measures for classification
-        - kDN
+        #- kDN
         - DCP
         - TD_P
         - TD_U
         - CL
         - CLD
-        - N1
-        - N2
+        #- N1
+        #- N2
         - LSC
         - LSR
         - Harmfulness
