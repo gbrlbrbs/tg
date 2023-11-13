@@ -13,7 +13,7 @@ def generate_data_from_z(
     device: torch.device,
     cat_dict: dict[str, int],
     n_samples: int = 100,
-) -> pd.DataFrame:
+) -> (pd.DataFrame, np.ndarray):
     """Generate data from a decoder.
 
     Args:
@@ -38,4 +38,4 @@ def generate_data_from_z(
     conts = cont_preds.detach().cpu().numpy() * stds + means
     df_cont = pd.DataFrame(conts, columns=cont_names)
     df = pd.concat([df_cat, df_cont], axis=1)
-    return df
+    return df, points
