@@ -69,7 +69,7 @@ def train_decoder(
             running_loss += loss_decoder.item()
             running_loss_epoch += loss_decoder.item()
 
-            if i % 20 == 19:
+            if i % 10 == 9:
                 last_loss = running_loss / 100
                 print(f'    Batch: {i+1}, Loss: {last_loss}')
                 tb_x = epoch * len(dl) + i + 1
