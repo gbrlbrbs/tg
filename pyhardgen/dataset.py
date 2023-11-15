@@ -10,7 +10,7 @@ class ProblemDataset(Dataset):
     Args:
         data_path (`pathlib.Path`): Path to the dataset.
     """
-    def __init__(self, data: pd.DataFrame, coordinates_path: Path, cats: list[str], conts: list[str]):
+    def __init__(self, dataset: pd.DataFrame, cats: list[str], conts: list[str], ys: list[str]):
         """Init method.
         
         Args:
@@ -19,11 +19,9 @@ class ProblemDataset(Dataset):
         """
         super(ProblemDataset, self).__init__()
         
-        coordinates = pd.read_csv(coordinates_path)
-        self.dataset = data.merge(coordinates, left_index=True, right_index=True)
-        self.dataset.drop(columns=['Row'], inplace=True)
-        self.y = self.dataset.loc[:, ['z_1', 'z_2']]
-        self.dataset.drop(columns=['z_1', 'z_2'], inplace=True)
+        self.dataset = dataset
+        self.y = self.dataset.loc[:, ys]
+        self.dataset = dataset.drop(columns=ys)
         self.cats = cats
         self.conts = conts
         self.n_features = len(self.dataset.columns)
@@ -80,7 +78,7 @@ def create_dataloader(
 
 def _emb_rule(n_cat: int):
     "Empirical values in fast.ai"
-    return min(600, 1.6 * n_cat**0.56)
+    return min(600, round(1.6 * n_cat**0.56))
 
 def _emb_size_instance(cat_dict: dict[str, int], name: str):
     n_cat = cat_dict[name]

@@ -40,7 +40,6 @@ class LossDecoder(nn.Module):
         cat_preds, cont_preds = preds
         ce, pos = cat_preds.new([0]), 0
         for i, (_, v) in enumerate(self.cat_dict.items()):
-            
             ce += self.ce(cat_preds[:, pos:pos+v].cpu(), cat_targets[:, i].cpu().long())
             pos += v
         

@@ -5,7 +5,7 @@ from .helpers import match_activation
 from ..config import model
 
 class Encoder(TabularModel):
-    def __init__(self, emb_szs, n_cont, latent_size: int, params: model, ps=0.2, embed_p=0.01):
+    def __init__(self, emb_szs, n_cont, latent_size: int, params: model, low: torch.Tensor, high: torch.Tensor, ps=0.2, embed_p=0.01):
         """Encoder class. Inherits from `TabularModel`.
 
         Args:
@@ -14,9 +14,10 @@ class Encoder(TabularModel):
         """
         layers = params.features
         act_fn = match_activation(params.activation)
-        super().__init__(emb_szs, n_cont, layers, out_sz=latent_size, embed_p=embed_p, act_cls=act_fn)
+        super().__init__(emb_szs, n_cont, latent_size, layers, embed_p=embed_p, act_cls=act_fn)
         self.layers = nn.Sequential(
-            *L(*self.layers.children())[:-1] + nn.Sequential(LinBnDrop(layers[-1], latent_size, p=ps, act=act_fn))
+            *L(*self.layers.children())[:-1] + 
+            nn.Sequential(LinBnDrop(layers[-1], latent_size, act=None, bn=False, p=ps), SigmoidRange(low=low, high=high))
             )
 
     def forward(self, x_cat: torch.Tensor, x_cont: torch.Tensor) -> torch.Tensor:

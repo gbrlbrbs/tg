@@ -1,5 +1,6 @@
 import torch
 from .nn.decoder import Decoder
+from .utils import decode_cats
 import numpy as np
 import pandas as pd
 
@@ -10,6 +11,8 @@ def generate_data_from_z(
     cont_names: list[str],
     means: np.ndarray,
     stds: np.ndarray,
+    means_y: np.ndarray,
+    stds_y: np.ndarray,
     device: torch.device,
     cat_dict: dict[str, int],
     n_samples: int = 100,
@@ -26,13 +29,10 @@ def generate_data_from_z(
         `pd.DataFrame`: Generated data.
     """
     points = np.random.uniform(z_limits[0], z_limits[1], size=(n_samples, 2))
-    decoded = decoder(torch.tensor(points, dtype=torch.float64).to(device))
+    norm_points = (points - means_y) / stds_y
+    decoded = decoder(torch.tensor(norm_points, dtype=torch.float64).to(device))
     cat_preds, cont_preds = decoded
-    cat_reduced = torch.zeros((n_samples, len(cat_names)), dtype=torch.long)
-    pos = 0
-    for i, (_, v) in enumerate(cat_dict.items()):
-        cat_reduced[:, i] = torch.argmax(cat_preds[:, pos:pos + v], dim=1)
-        pos += v
+    cat_reduced = decode_cats(cat_preds, cat_dict)
     
     df_cat = pd.DataFrame(cat_reduced.cpu().numpy(), columns=cat_names)
     conts = cont_preds.detach().cpu().numpy() * stds + means

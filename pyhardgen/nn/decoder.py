@@ -5,7 +5,7 @@ from .helpers import match_activation
 from ..config import model
 
 class Decoder(nn.Module):
-    def __init__(self, latent_size: int, n_cont: int, n_cat: int, low: float, high: float, params: model):
+    def __init__(self, latent_size: int, n_cont: int, n_cat: int, low: torch.Tensor, high: torch.Tensor, params: model):
         """Decoder class.
         
         Args:
@@ -15,7 +15,7 @@ class Decoder(nn.Module):
         """
         super(Decoder, self).__init__()
         num_layers = params.n_layers
-        features = params.features
+        features = params.features.copy()
         features.reverse()
         activation = match_activation(params.activation)
         layers = []
