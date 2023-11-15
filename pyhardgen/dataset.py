@@ -77,3 +77,23 @@ def create_dataloader(
         pin_memory=pin_memory
     )
     return dataloader
+
+def _emb_rule(n_cat: int):
+    "Empirical values in fast.ai"
+    return min(600, 1.6 * n_cat**0.56)
+
+def _emb_size_instance(cat_dict: dict[str, int], name: str):
+    n_cat = cat_dict[name]
+    sz = _emb_rule(n_cat)
+    return (n_cat, sz)
+
+def get_emb_sizes(cat_dict: dict[str, int]) -> list[tuple[int, int]]:
+    """Get embedding sizes.
+    
+    Args:
+        cat_dict (dict[str, int]): Dictionary of categorical variables and their cardinality.
+    
+    Returns:
+        list[tuple[int, int]]: List of tuples of categorical variables and their embedding sizes.
+    """
+    return [_emb_size_instance(cat_dict, name) for name in cat_dict.keys()]

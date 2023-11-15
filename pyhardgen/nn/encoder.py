@@ -1,33 +1,24 @@
 import torch
 import torch.nn as nn
+from fastai.tabular.all import *
 from .helpers import match_activation
 from ..config import model
 
-class Encoder(nn.Module):
-    def __init__(self, input_size: int, latent_size: int, params: model):
-        """Encoder class.
+class Encoder(TabularModel):
+    def __init__(self, emb_szs, n_cont, latent_size: int, params: model, ps=0.2, embed_p=0.01):
+        """Encoder class. Inherits from `TabularModel`.
 
         Args:
-            input_size (int): Input size.
             latent_size (int): Latent size.
-            params (`nn`): Parameters for the encoder.
+            params (`model`): Parameters for the encoder.
         """
-        super(Encoder, self).__init__()
-        num_layers = params.n_layers
-        features = params.features
-        activation = match_activation(params.activation)
-        layers = []
-        for i in range(num_layers):
-            if i == 0:
-                layers.append(nn.Linear(input_size, features[i]))
-            else:
-                layers.append(nn.Linear(features[i-1], features[i]))
-            layers.append(activation)
-        layers.append(nn.Linear(features[-1], latent_size))
-        layers.append(activation)
+        layers = params.features
+        act_fn = match_activation(params.activation)
+        super().__init__(emb_szs, n_cont, layers, out_sz=latent_size, embed_p=embed_p, act_cls=act_fn)
+        self.layers = nn.Sequential(
+            *L(*self.layers.children())[:-1] + nn.Sequential(LinBnDrop(layers[-1], latent_size, p=ps, act=act_fn))
+            )
 
-        self.encoder = nn.Sequential(*layers)
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        encoded: torch.Tensor = self.encoder(x)
+    def forward(self, x_cat: torch.Tensor, x_cont: torch.Tensor) -> torch.Tensor:
+        encoded: torch.Tensor = super().forward(x_cat, x_cont)
         return encoded
