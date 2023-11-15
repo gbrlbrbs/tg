@@ -21,7 +21,7 @@ parser.add_argument('exp', type=int, help='Experiment number')
 def main():
     args = parser.parse_args()
     exp_num = args.exp
-    data_path = Path('../pyhard/sjc_internacao')
+    data_path = Path('./pyhard/sjc_internacao')
     coordinates_path = data_path / 'coordinates.csv'
     pyhard_folder_path = Path(f'./pyhard/exp{exp_num}')
     pyhard_folder_path.mkdir(parents=True, exist_ok=True)
