@@ -5,7 +5,7 @@ from .helpers import match_activation
 from ..config import model
 
 class Decoder(nn.Module):
-    def __init__(self, latent_size: int, n_cont: int, n_cat: int, low: torch.Tensor, high: torch.Tensor, params: model):
+    def __init__(self, latent_size: int, n_meta_feat: int, low: torch.Tensor, high: torch.Tensor, params: model):
         """Decoder class.
         
         Args:
@@ -25,17 +25,11 @@ class Decoder(nn.Module):
             else:
                 layers.append(LinBnDrop(features[i-1], features[i], p=params.dropout, act=activation))
 
-        self.decoder = nn.Sequential(*layers)
-
-        self.decoder_cont = nn.Sequential(
-            LinBnDrop(features[-1], n_cont, p=params.dropout, act=None, bn=False),
-            SigmoidRange(low=low, high=high)
+        layers.append(
+            LinBnDrop(features[-1], n_meta_feat, p=params.dropout, act=None, bn=False)
         )
-
-        self.decoder_cat = LinBnDrop(features[-1], n_cat, p=params.dropout, act=None, bn=False)
+        self.decoder = nn.Sequential(*layers)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         decoded: torch.Tensor = self.decoder(x)
-        decoded_cont: torch.Tensor = self.decoder_cont(decoded)
-        decoded_cat: torch.Tensor = self.decoder_cat(decoded)
-        return decoded_cat, decoded_cont
+        return decoded

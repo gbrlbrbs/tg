@@ -10,7 +10,7 @@ class ProblemDataset(Dataset):
     Args:
         data_path (`pathlib.Path`): Path to the dataset.
     """
-    def __init__(self, dataset: pd.DataFrame, cats: list[str], conts: list[str], ys: list[str]):
+    def __init__(self, dataset: pd.DataFrame, coordinates: pd.DataFrame):
         """Init method.
         
         Args:
@@ -18,13 +18,10 @@ class ProblemDataset(Dataset):
             coordinates_path (`pathlib.Path`): Path to the coordinates in CSV.
         """
         super(ProblemDataset, self).__init__()
-        
-        self.dataset = dataset
-        self.y = self.dataset.loc[:, ys]
-        self.dataset = dataset.drop(columns=ys)
-        self.cats = cats
-        self.conts = conts
-        self.n_features = len(self.dataset.columns)
+        self.xs = dataset.columns
+        self.ys = coordinates.columns
+        self.dataset = dataset.merge(coordinates, left_index=True, right_index=True)
+        self.n_meta_features = len(self.xs)
 
     def __len__(self) -> int:
         """Length of the dataset.
@@ -43,10 +40,9 @@ class ProblemDataset(Dataset):
         Returns:
             tuple: Inputs and outputs.
         """
-        inputs_cats = self.dataset.loc[:, self.cats].iloc[idx, :].values
-        inputs_conts = self.dataset.loc[:, self.conts].iloc[idx, :].values
-        outputs = self.y.iloc[idx, :].values
-        return inputs_cats, inputs_conts, outputs
+        inputs = self.dataset[self.xs].iloc[idx, :].values
+        outputs = self.dataset[self.ys].iloc[idx, :].values
+        return inputs, outputs
 
 
 def create_dataloader(

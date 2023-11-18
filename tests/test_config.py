@@ -1,13 +1,13 @@
 import unittest
 import schema
 from pathlib import Path
-from pyhardgen.config import load_config, Config
+from pyhardgen.config import load_exp, Config
 
 class TestConfig(unittest.TestCase):
 
     def test_load_config(self):
         path = Path('files/test_config.yaml')
-        config = load_config(path)
+        config = load_exp(path)
         self.assertIsInstance(config, Config)
         self.assertEqual(config.name, 'test')
         self.assertEqual(config.ngpu, 1)
@@ -27,7 +27,7 @@ class TestConfig(unittest.TestCase):
     def test_config_schema_error(self):
         path = Path('files/test_config_schema_error.yaml')
         with self.assertRaises(schema.SchemaError):
-            load_config(path)
+            load_exp(path)
 
 if __name__ == '__main__':
     unittest.main()

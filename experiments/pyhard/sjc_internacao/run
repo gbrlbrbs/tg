@@ -1,0 +1,191 @@
+[INFO] 2023-01-21 16:25:16,721 - Configuration file: '/Users/aclorena/Documents/Lorena/Artigos meus/ICML2023/TentativaICML/sjc_internacao/sjc_internacao_1/config.yaml'
+[INFO] 2023-01-21 16:25:16,728 - Reading input dataset: '/Users/aclorena/Documents/Lorena/Artigos meus/ICML2023/TentativaICML/sjc_internacao/sjc_internacao_1/sjc_internacao_1.csv'
+[INFO] 2023-01-21 16:25:16,741 - Type of problem: 'classification'
+/Users/aclorena/opt/anaconda3/envs/pyhard/lib/python3.10/site-packages/pyhard/validator.py:70: FutureWarning: In a future version of pandas all arguments of DataFrame.any and Series.any will be keyword-only.
+  assert not data.isnull().any(None), "Data should not contain NaN values."  # noqa
+[INFO] 2023-01-21 16:25:16,749 - Seed=0
+[INFO] 2023-01-21 16:25:16,749 - Building metadata.
+[INFO] 2023-01-21 16:25:38,279 - Calculating measure 'CL'
+[INFO] 2023-01-21 16:25:38,283 - Calculating measure 'CLD'
+[INFO] 2023-01-21 16:25:38,285 - Calculating measure 'DCP'
+[INFO] 2023-01-21 16:25:41,063 - Calculating measure 'F1'
+[INFO] 2023-01-21 16:25:41,072 - Calculating measure 'Harmfulness'
+[INFO] 2023-01-21 16:25:41,603 - Calculating measure 'LSC'
+[INFO] 2023-01-21 16:25:44,339 - Calculating measure 'LSR'
+[INFO] 2023-01-21 16:25:47,102 - Calculating measure 'N1'
+[INFO] 2023-01-21 16:25:59,716 - Calculating measure 'N2'
+[INFO] 2023-01-21 16:26:04,846 - Calculating measure 'TD_P'
+[INFO] 2023-01-21 16:26:05,543 - Calculating measure 'TD_U'
+[INFO] 2023-01-21 16:26:06,231 - Calculating measure 'Usefulness'
+[INFO] 2023-01-21 16:26:06,487 - Calculating measure 'kDN'
+[INFO] 2023-01-21 16:26:07,880 - Assessing performance of classifier 'bagging'
+[INFO] 2023-01-21 16:26:07,881 - Estimating instance performance...
+[INFO] 2023-01-21 16:26:07,885 - Evaluating testing fold #1
+[INFO] 2023-01-21 16:26:07,886 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:08,161 - Test fold mean accuracy: 0.911042944785276
+[INFO] 2023-01-21 16:26:08,161 - Evaluating testing fold #2
+[INFO] 2023-01-21 16:26:08,164 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:08,280 - Test fold mean accuracy: 0.912883435582822
+[INFO] 2023-01-21 16:26:08,280 - Evaluating testing fold #3
+[INFO] 2023-01-21 16:26:08,282 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:08,400 - Test fold mean accuracy: 0.9061349693251534
+[INFO] 2023-01-21 16:26:08,401 - Evaluating testing fold #4
+[INFO] 2023-01-21 16:26:08,402 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:08,514 - Test fold mean accuracy: 0.9141104294478528
+[INFO] 2023-01-21 16:26:08,514 - Evaluating testing fold #5
+[INFO] 2023-01-21 16:26:08,516 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:08,632 - Test fold mean accuracy: 0.9189686924493554
+[INFO] 2023-01-21 16:26:08,632 - Iteration 1/1 completed.
+[INFO] 2023-01-21 16:26:08,634 - Mean accuracy on test instances (iteration #1): 0.9126
+[INFO] 2023-01-21 16:26:08,635 - Assessing performance of classifier 'gradient_boosting'
+[INFO] 2023-01-21 16:26:08,635 - Estimating instance performance...
+[INFO] 2023-01-21 16:26:08,636 - Evaluating testing fold #1
+[INFO] 2023-01-21 16:26:08,637 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:09,580 - Test fold mean accuracy: 0.9361963190184049
+[INFO] 2023-01-21 16:26:09,580 - Evaluating testing fold #2
+[INFO] 2023-01-21 16:26:09,581 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:10,514 - Test fold mean accuracy: 0.9404907975460123
+[INFO] 2023-01-21 16:26:10,515 - Evaluating testing fold #3
+[INFO] 2023-01-21 16:26:10,516 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:11,450 - Test fold mean accuracy: 0.9276073619631902
+[INFO] 2023-01-21 16:26:11,451 - Evaluating testing fold #4
+[INFO] 2023-01-21 16:26:11,452 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:12,386 - Test fold mean accuracy: 0.9282208588957055
+[INFO] 2023-01-21 16:26:12,386 - Evaluating testing fold #5
+[INFO] 2023-01-21 16:26:12,388 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:13,320 - Test fold mean accuracy: 0.9355432780847146
+[INFO] 2023-01-21 16:26:13,320 - Iteration 1/1 completed.
+[INFO] 2023-01-21 16:26:13,320 - Mean accuracy on test instances (iteration #1): 0.9336
+[INFO] 2023-01-21 16:26:13,321 - Assessing performance of classifier 'logistic_regression'
+[INFO] 2023-01-21 16:26:13,321 - Estimating instance performance...
+[INFO] 2023-01-21 16:26:13,321 - Evaluating testing fold #1
+[INFO] 2023-01-21 16:26:13,323 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:13,397 - Test fold mean accuracy: 0.9325153374233128
+[INFO] 2023-01-21 16:26:13,397 - Evaluating testing fold #2
+[INFO] 2023-01-21 16:26:13,398 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:13,444 - Test fold mean accuracy: 0.938036809815951
+[INFO] 2023-01-21 16:26:13,444 - Evaluating testing fold #3
+[INFO] 2023-01-21 16:26:13,445 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:13,502 - Test fold mean accuracy: 0.9300613496932515
+[INFO] 2023-01-21 16:26:13,502 - Evaluating testing fold #4
+[INFO] 2023-01-21 16:26:13,504 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:13,551 - Test fold mean accuracy: 0.9343558282208589
+[INFO] 2023-01-21 16:26:13,551 - Evaluating testing fold #5
+[INFO] 2023-01-21 16:26:13,552 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:13,627 - Test fold mean accuracy: 0.9355432780847146
+[INFO] 2023-01-21 16:26:13,627 - Iteration 1/1 completed.
+[INFO] 2023-01-21 16:26:13,627 - Mean accuracy on test instances (iteration #1): 0.9341
+[INFO] 2023-01-21 16:26:13,628 - Assessing performance of classifier 'mlp'
+[INFO] 2023-01-21 16:26:13,628 - Estimating instance performance...
+[INFO] 2023-01-21 16:26:13,629 - Evaluating testing fold #1
+[INFO] 2023-01-21 16:26:13,630 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:18,850 - Test fold mean accuracy: 0.9276073619631902
+[INFO] 2023-01-21 16:26:18,850 - Evaluating testing fold #2
+[INFO] 2023-01-21 16:26:18,851 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:24,143 - Test fold mean accuracy: 0.9294478527607362
+[INFO] 2023-01-21 16:26:24,143 - Evaluating testing fold #3
+[INFO] 2023-01-21 16:26:24,144 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:29,389 - Test fold mean accuracy: 0.9134969325153375
+[INFO] 2023-01-21 16:26:29,389 - Evaluating testing fold #4
+[INFO] 2023-01-21 16:26:29,391 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:34,688 - Test fold mean accuracy: 0.9141104294478528
+[INFO] 2023-01-21 16:26:34,688 - Evaluating testing fold #5
+[INFO] 2023-01-21 16:26:34,690 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:39,969 - Test fold mean accuracy: 0.9232658072437078
+[INFO] 2023-01-21 16:26:39,969 - Iteration 1/1 completed.
+[INFO] 2023-01-21 16:26:39,969 - Mean accuracy on test instances (iteration #1): 0.9216
+[INFO] 2023-01-21 16:26:39,970 - Assessing performance of classifier 'random_forest'
+[INFO] 2023-01-21 16:26:39,970 - Estimating instance performance...
+[INFO] 2023-01-21 16:26:39,971 - Evaluating testing fold #1
+[INFO] 2023-01-21 16:26:39,972 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:40,503 - Test fold mean accuracy: 0.9141104294478528
+[INFO] 2023-01-21 16:26:40,503 - Evaluating testing fold #2
+[INFO] 2023-01-21 16:26:40,504 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:40,988 - Test fold mean accuracy: 0.9208588957055215
+[INFO] 2023-01-21 16:26:40,988 - Evaluating testing fold #3
+[INFO] 2023-01-21 16:26:40,989 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:41,513 - Test fold mean accuracy: 0.9104294478527607
+[INFO] 2023-01-21 16:26:41,514 - Evaluating testing fold #4
+[INFO] 2023-01-21 16:26:41,515 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:41,997 - Test fold mean accuracy: 0.9116564417177914
+[INFO] 2023-01-21 16:26:41,997 - Evaluating testing fold #5
+[INFO] 2023-01-21 16:26:41,998 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:42,520 - Test fold mean accuracy: 0.9226519337016574
+[INFO] 2023-01-21 16:26:42,520 - Iteration 1/1 completed.
+[INFO] 2023-01-21 16:26:42,520 - Mean accuracy on test instances (iteration #1): 0.9159
+[INFO] 2023-01-21 16:26:42,521 - Assessing performance of classifier 'svc_linear'
+[INFO] 2023-01-21 16:26:42,521 - Estimating instance performance...
+[INFO] 2023-01-21 16:26:42,522 - Evaluating testing fold #1
+[INFO] 2023-01-21 16:26:42,523 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:43,107 - Test fold mean accuracy: 0.9312883435582822
+[INFO] 2023-01-21 16:26:43,108 - Evaluating testing fold #2
+[INFO] 2023-01-21 16:26:43,109 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:43,686 - Test fold mean accuracy: 0.9368098159509203
+[INFO] 2023-01-21 16:26:43,686 - Evaluating testing fold #3
+[INFO] 2023-01-21 16:26:43,688 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:44,236 - Test fold mean accuracy: 0.9282208588957055
+[INFO] 2023-01-21 16:26:44,236 - Evaluating testing fold #4
+[INFO] 2023-01-21 16:26:44,237 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:44,779 - Test fold mean accuracy: 0.9361963190184049
+[INFO] 2023-01-21 16:26:44,779 - Evaluating testing fold #5
+[INFO] 2023-01-21 16:26:44,781 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:45,342 - Test fold mean accuracy: 0.9361571516267649
+[INFO] 2023-01-21 16:26:45,343 - Iteration 1/1 completed.
+[INFO] 2023-01-21 16:26:45,343 - Mean accuracy on test instances (iteration #1): 0.9337
+[INFO] 2023-01-21 16:26:45,343 - Assessing performance of classifier 'svc_rbf'
+[INFO] 2023-01-21 16:26:45,343 - Estimating instance performance...
+[INFO] 2023-01-21 16:26:45,344 - Evaluating testing fold #1
+[INFO] 2023-01-21 16:26:45,345 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:47,040 - Test fold mean accuracy: 0.9300613496932515
+[INFO] 2023-01-21 16:26:47,040 - Evaluating testing fold #2
+[INFO] 2023-01-21 16:26:47,042 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:48,807 - Test fold mean accuracy: 0.9374233128834356
+[INFO] 2023-01-21 16:26:48,808 - Evaluating testing fold #3
+[INFO] 2023-01-21 16:26:48,809 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:50,494 - Test fold mean accuracy: 0.9257668711656442
+[INFO] 2023-01-21 16:26:50,495 - Evaluating testing fold #4
+[INFO] 2023-01-21 16:26:50,497 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:52,201 - Test fold mean accuracy: 0.9349693251533743
+[INFO] 2023-01-21 16:26:52,201 - Evaluating testing fold #5
+[INFO] 2023-01-21 16:26:52,203 - Calibrating probabilities
+[INFO] 2023-01-21 16:26:53,959 - Test fold mean accuracy: 0.9355432780847146
+[INFO] 2023-01-21 16:26:53,959 - Iteration 1/1 completed.
+[INFO] 2023-01-21 16:26:53,960 - Mean accuracy on test instances (iteration #1): 0.9328
+[INFO] 2023-01-21 16:26:54,216 - Feature selection on
+[INFO] 2023-01-21 16:26:54,370 - Applying varicance threshold
+[INFO] 2023-01-21 16:26:54,371 - Removed features: []
+[INFO] 2023-01-21 16:26:54,371 - Applying correlation threshold
+[INFO] 2023-01-21 16:26:54,371 - Removed features: ['feature_CLD']
+[INFO] 2023-01-21 16:26:54,371 - Applying main filtering method: NCA
+[INFO] 2023-01-21 16:27:10,417 - Selected features: ['feature_DCP', 'feature_kDN', 'feature_N2', 'feature_N1', 'feature_CL', 'feature_TD_P']
+[INFO] 2023-01-21 16:27:10,531 - Running Instance Space Analysis with 'python' engine.
+[INFO] 2023-01-21 16:27:10,536 - Adding gaussian noise to the metadata for numerical stability.
+[INFO] 2023-01-21 16:27:10,570 - Calculating the binary measure of performance
+[INFO] 2023-01-21 16:27:10,573 - An algorithm is good if its performace is less than 0.6926
+[INFO] 2023-01-21 16:27:10,574 - For 0.0% of the instances there is more than one best algorithm. Random selection is used to break ties.
+[INFO] 2023-01-21 16:27:10,575 - Auto pre-processing.
+[INFO] 2023-01-21 16:27:10,575 - Removing extreme outliers from the feature values.
+[INFO] 2023-01-21 16:27:10,583 - Auto-normalizing the data using Box-Cox and Z transformations.
+[INFO] 2023-01-21 16:27:10,661 - Calling PILOT to find the optimal projection.
+[INFO] 2023-01-21 16:27:10,661 - PILOT is solving numerically the projection problem.
+[INFO] 2023-01-21 16:27:12,581 - PILOT has completed trial 1
+[INFO] 2023-01-21 16:27:13,786 - PILOT has completed trial 2
+[INFO] 2023-01-21 16:27:15,179 - PILOT has completed trial 3
+[INFO] 2023-01-21 16:27:16,586 - PILOT has completed trial 4
+[INFO] 2023-01-21 16:27:17,974 - PILOT has completed trial 5
+[INFO] 2023-01-21 16:27:17,979 - PILOT has completed.
+[INFO] 2023-01-21 16:27:18,110 - Adjusting the IS rotation.
+[INFO] 2023-01-21 16:27:18,110 - The space was rotated by 33.3 degrees.
+[INFO] 2023-01-21 16:27:18,110 - Calling TRACE to perform the footprint analysis.
+[INFO] 2023-01-21 16:27:18,111 - TRACE is calculating the space area and density.
+[INFO] 2023-01-21 16:27:19,433 - TRACE is calculating the algorithm footprints.
+[WARNING] 2023-01-21 16:27:19,433 - Some log messages are temporarily disabled in parallel mode. This functionality will be added in future versions
+[INFO] 2023-01-21 16:27:19,504 - Calculating footprints...
+[INFO] 2023-01-21 16:27:26,333 - TRACE is detecting and removing contradictory sections of the footprints.
+[INFO] 2023-01-21 16:27:26,669 - TRACE is calculating the beta-footprint.
+[INFO] 2023-01-21 16:27:26,850 - TRACE is preparing the summary table.
+[INFO] 2023-01-21 16:27:26,855 - TRACE has completed.
+[INFO] 2023-01-21 16:27:26,856 - Calculating instance easiness footprint area
+[INFO] 2023-01-21 16:27:26,856 - An instance is easy if its IH-value <= 0.4
+[INFO] 2023-01-21 16:27:28,777 - Total elapsed time: 2m12s
+[INFO] 2023-01-21 16:27:28,777 - Instance Hardness analysis finished.

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from serde import serde
+from serde import serde, field, from_dict, SerdeError
 from serde.yaml import from_yaml
 from schema import Schema, And, Optional
 from pathlib import Path
@@ -39,6 +39,11 @@ class Config:
     dataset: dataset
     optimizer: optimizer
 
+@serde
+@dataclass
+class MeasureList:
+    measures: list[str] = field(rename='list')
+
 
 class ModelSchema(Schema):
 
@@ -72,14 +77,27 @@ SCHEMA = Schema({
     },
 })
 
-def load_config(path: Path) -> Config:
+def load_exp(path: Path) -> Config:
+    with open(path, 'r') as file:
+        exp_raw_str = file.read()
+
+    exp_raw = yaml.safe_load(exp_raw_str)
+    
+    SCHEMA.validate(exp_raw)
+
+    exp = from_yaml(Config, exp_raw_str)
+
+    return exp
+
+def load_measures(path: Path) -> MeasureList:
     with open(path, 'r') as file:
         config_raw_str = file.read()
 
     config_raw = yaml.safe_load(config_raw_str)
-    
-    SCHEMA.validate(config_raw)
-
-    config = from_yaml(Config, config_raw_str)
-
-    return config
+    measures_raw = config_raw['measures']
+    try: 
+        measures = from_dict(MeasureList, measures_raw)
+        return measures
+    except SerdeError as e:
+        print(e)
+        raise e

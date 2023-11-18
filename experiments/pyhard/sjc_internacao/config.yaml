@@ -57,10 +57,10 @@ hpo:
     enabled: False
     
     # Maximum number of evaluations (steps)
-    evals: 5
+    evals: 10
     
     # Timeout for each fold (in seconds)
-    timeout: 30
+    timeout: 90
 
 
 # ISA parameters
@@ -90,14 +90,14 @@ measures:
     # which measures to calculate
     list:
         # hardness measures for classification
-        # - kDN
+        - kDN
         - DCP
         - TD_P
         - TD_U
         - CL
         - CLD
-        # - N1
-        # - N2
+        - N1
+        - N2
         - LSC
         - LSR
         - Harmfulness
@@ -142,12 +142,12 @@ algos:
     pool:
         # classifiers
         - svc_linear
-        # - svc_rbf
+        - svc_rbf
         - random_forest
-        # - gradient_boosting
+        - gradient_boosting
         - bagging
         - logistic_regression
-        # - mlp
+        - mlp
         # - dummy
 
         # regressors

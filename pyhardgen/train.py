@@ -154,7 +154,6 @@ def train_decoder_encoder(
         config: Config,
         device: torch.device,
         writer: SummaryWriter,
-        cat_dict: dict[str, int]
 ):
     """Train the decoder encoder.
 
@@ -173,8 +172,7 @@ def train_decoder_encoder(
     decoder.train()
     encoder.train()
 
-    criterion_dec = LossDecoder(cat_dict)
-    criterion_enc = match_loss(config.nn.loss)
+    criterion = match_loss(config.nn.loss)
 
     encoder_losses = []
 
@@ -197,19 +195,15 @@ def train_decoder_encoder(
         running_loss_epoch = 0.0
         running_loss_epoch_decoder = 0.0
         running_loss_epoch_encoder = 0.0
-        for i, (x_cat, x_cont, y) in enumerate(dl):
+        for i, (x, y) in enumerate(dl):
             de_optim.zero_grad()
             yt = torch.tensor(y, dtype=torch.float64).to(device)
-            xt_cat = torch.tensor(x_cat, dtype=torch.float64).to(device)
-            xt_cont = torch.tensor(x_cont, dtype=torch.float64).to(device)
+            xt = torch.tensor(x, dtype=torch.float64).to(device)
 
             decoded = decoder(yt)
-            loss_dec = criterion_dec(decoded, xt_cat, xt_cont)
-
-            decoded_cat_raw, decoded_cont = decoded
-            decoded_cat = decode_cats(decoded_cat_raw, cat_dict)
-            encoded = encoder(decoded_cat, decoded_cont)
-            loss_enc = criterion_enc(encoded, yt)
+            loss_dec = criterion(decoded, xt)
+            encoded = encoder(decoded)
+            loss_enc = criterion(encoded, yt)
             
             loss = loss_dec + loss_enc
             loss.backward()

@@ -2,7 +2,7 @@ name: "exp1"
 ngpu: 1
 workers: 2
 runs: 1
-epochs: 25
+epochs: 50
 
 nn:
   n_layers: 3 # number of hidden layers
@@ -14,7 +14,7 @@ nn:
   loss: mse
 
 dataset:
-  filename: sjc_internacao.csv
+  filename: feature_raw.csv
   batch_size: 250
 
 optimizer:
