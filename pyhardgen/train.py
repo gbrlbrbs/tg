@@ -26,7 +26,6 @@ def train_decoder(
         config: Config,
         device: torch.device,
         writer: SummaryWriter,
-        cat_dict: dict[str, int]
 ):
     """Train the decoder.
 
@@ -43,7 +42,7 @@ def train_decoder(
     decoder.to(device).type(torch.float64)
     decoder.train()
 
-    criterion = LossDecoder(cat_dict)
+    criterion = match_loss(config.nn.loss)
 
     decoder_losses = []
 
@@ -54,21 +53,21 @@ def train_decoder(
         running_loss = 0.0
         last_loss = 0.0
         running_loss_epoch = 0.0
-        for i, (x_cat, x_cont, y) in enumerate(dl):
+
+        for i, (x, y) in enumerate(dl):
             decoder_optim.zero_grad()
 
-            xt_cat = torch.tensor(x_cat, dtype=torch.float64).to(device)
-            xt_cont = torch.tensor(x_cont, dtype=torch.float64).to(device)
+            xt = torch.tensor(x, dtype=torch.float64).to(device)
             yt = torch.tensor(y, dtype=torch.float64).to(device)
 
             decoded = decoder(yt)
-            loss_decoder = criterion(decoded, xt_cat, xt_cont)
+            loss = criterion(decoded, xt)
 
-            loss_decoder.backward()
+            loss.backward()
             decoder_optim.step()
 
-            running_loss += loss_decoder.item()
-            running_loss_epoch += loss_decoder.item()
+            running_loss += loss.item()
+            running_loss_epoch += loss.item()
 
             if i % 10 == 9:
                 last_loss = running_loss / 10
@@ -81,7 +80,6 @@ def train_decoder(
         decoder_losses.append(loss_epoch)
         writer.add_scalar('Decoder Epoch Loss', loss_epoch, epoch+1)
         print(f'Epoch Loss: {loss_epoch}')
-
     return TrainReturn(decoder, decoder_losses)
 
 def train_encoder(
@@ -211,10 +209,11 @@ def train_decoder_encoder(
 
             running_loss_decoder += loss_dec.item()
             running_loss_epoch_decoder += loss_dec.item()
-            running_loss += loss.item()
 
             running_loss_encoder += loss_enc.item()
             running_loss_epoch_encoder += loss_enc.item()
+            
+            running_loss += loss.item()
             running_loss_epoch += loss.item()
 
             if i % 10 == 9:

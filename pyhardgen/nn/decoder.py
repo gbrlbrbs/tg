@@ -5,7 +5,7 @@ from .helpers import match_activation
 from ..config import model
 
 class Decoder(nn.Module):
-    def __init__(self, latent_size: int, n_meta_feat: int, low: torch.Tensor, high: torch.Tensor, params: model):
+    def __init__(self, latent_size: int, n_meta_feat: int, params: model):
         """Decoder class.
         
         Args:

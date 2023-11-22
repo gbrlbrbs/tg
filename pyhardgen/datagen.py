@@ -28,5 +28,5 @@ def generate_data_from_z(
     norm_points = (points - means_y) / stds_y
     decoded = decoder(torch.tensor(norm_points, dtype=torch.float64).to(device))
     
-    df = pd.DataFrame(decoded.cpu().numpy(), columns=measures)
+    df = pd.DataFrame(decoded.detach().cpu().numpy(), columns=measures)
     return df, points
